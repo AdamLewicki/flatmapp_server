@@ -21,4 +21,5 @@ urlpatterns = [
 
     # REST FRAMEWORK URLS
     path('api/backup/', include('backup.api.urls', 'backup_api')),
+    path('api/account/', include('account.api.urls', 'account_api'))
 ]
