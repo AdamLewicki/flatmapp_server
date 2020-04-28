@@ -22,6 +22,6 @@ class TriggerSerializer(WritableNestedModelSerializer):
     Marker_Id = MarkerSerializer()
 
     class Meta:
-        model = Tester
+        model = Trigger
         fields = "__all__"
         depth = 2
