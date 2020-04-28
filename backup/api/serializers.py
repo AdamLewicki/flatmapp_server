@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from drf_writable_nested.serializers import WritableNestedModelSerializer
 
-from backup.models import Marker, Action, Trigger, Tester
+from backup.models import Marker, Action, Trigger
 from account.api.serializers import AccountSerializaer
 
 class MarkerSerializer(serializers.ModelSerializer):
