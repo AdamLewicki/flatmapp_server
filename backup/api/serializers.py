@@ -16,14 +16,6 @@ class ActionSerializer(serializers.ModelSerializer):
         fields = '__all__'
         depth = 1
 
-class TesterSerializer(WritableNestedModelSerializer):
-    Action_Id = ActionSerializer()
-    Marker_Id = MarkerSerializer()
-
-    class Meta:
-        model = Tester
-        fields = "__all__"
-
 class TriggerSerializer(WritableNestedModelSerializer):
     User_Id   = AccountSerializaer(required=False)
     Action_Id = ActionSerializer()
