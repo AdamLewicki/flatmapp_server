@@ -52,7 +52,7 @@ class TriggerDetail(APIView):
         if trigger.User_Id != user:
             return Response({'response':"You don't have permission to delete that."}, status=status.HTTP_403_FORBIDDEN)
 
-        snippet.delete()
+        trigger.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 class TriggerList(APIView):
