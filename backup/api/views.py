@@ -12,6 +12,11 @@ from rest_framework import generics
 from backup.models import Trigger
 from backup.api.serializers import TriggerSerializer
 
+from backup.models import Pointer
+from backup.api.serializers import PointerSerializer
+
+from backup.models import Action
+
 
 class TriggerDetail(APIView):
     permission_classes = [IsAuthenticated]
@@ -55,19 +60,50 @@ class TriggerDetail(APIView):
         trigger.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
-class TriggerList(APIView):
+class PointerList(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
         user = request.user
-        triggers = Trigger.objects.filter(User_Id=user)
-        serializer = TriggerSerializer(triggers, many=True)
+        
+        pointer = Pointer.objects.filter(User_Name=user)
+        serializer = PointerSerializer(pointer, many=True)
         return Response(serializer.data)
 
+    # method that saves multiple Pointers
     def post(self, request, format=None):
-        trigger = Trigger(User_Id=request.user)
-        serializer = TriggerSerializer(trigger, data=request.data )
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        to_save = list()
+        # splits pointers data
+        for obj in request.data:
+            actions = obj.pop("Action_Name")
+            actions = set(actions)
+            pointer = Pointer(User_Name=request.user)
+            serializer = PointerSerializer(pointer, data=obj)
+            # check if Action exists in database, if not, stops saving
+            for ack in actions:
+                if not Action.objects.filter(Action_Name = ack):
+                    data = {"Action_Name": [f"Action {ack} is not in the database"], "Status": ["ERROR"]}
+                    return Response(data, status=status.HTTP_400_BAD_REQUEST)
+            # checks if all serializers are valid, if not, stops saving
+            if serializer.is_valid():
+                tmp = (serializer, pointer, actions)
+                to_save.append(tmp)
+            else:
+                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            # we checked if serializers are valid and if actions exits in db, now we can save all pointers
+            # also, to add Action_Name, a pointer must have pk, so we can add it only after saving    
+        for tmp in to_save:
+            tmp[0].save()
+            tmp[1].Action_Name.set(tmp[2])
+
+            data = {"Status" : ["OK"]}
+            return Response(data, status=status.HTTP_201_CREATED)
+    
+    def delete(self, request):
+        pointer = Pointer.objects.filter(User_Name=request.user)
+        pointer.delete()
+        
+        data = {"Status" : ["OK"]}
+        return Response(data, status=status.HTTP_204_NO_CONTENT)
+        

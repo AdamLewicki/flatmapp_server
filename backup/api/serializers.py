@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from drf_writable_nested.serializers import WritableNestedModelSerializer
 
-from backup.models import Marker, Action, Trigger
+from backup.models import Marker, Action, Trigger, Pointer
 from account.api.serializers import AccountSerializaer
 
 class MarkerSerializer(serializers.ModelSerializer):
@@ -23,5 +23,14 @@ class TriggerSerializer(WritableNestedModelSerializer):
 
     class Meta:
         model = Trigger
+        fields = "__all__"
+        depth = 2
+
+class PointerSerializer(WritableNestedModelSerializer):
+    User_Name = AccountSerializaer(required=False, write_only=True)
+    Action_Name = ActionSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Pointer
         fields = "__all__"
         depth = 2

@@ -21,10 +21,11 @@ class Marker(models.Model):
         verbose_name_plural     = 'Markers'
 
 class Action(models.Model):
-    Name = models.CharField(max_length=128)
+    Action_Name = models.TextField(primary_key=True)
+    icon = models.TextField()
 
     def __str__(self):
-        return self.Name
+        return self.Action_Name
     
     class Meta:
         managed                 = True
@@ -35,3 +36,18 @@ class Trigger(models.Model):
     User_Id                     = models.ForeignKey(Account, on_delete=models.CASCADE)
     Action_Id                   = models.ForeignKey(Action, on_delete=models.CASCADE)
     Marker_Id                   = models.ForeignKey(Marker, on_delete=models.CASCADE)
+
+
+class Pointer(models.Model):
+    User_Name = models.ForeignKey(Account, on_delete=models.CASCADE)
+    Action_Name = models.ManyToManyField(Action)
+
+    position_y = models.FloatField()
+    position_x = models.FloatField()
+    _range = models.FloatField()
+    action_position = models.IntegerField()
+
+    title = models.TextField()
+    icon = models.TextField()
+    description = models.TextField()
+    action_detail = models.TextField()

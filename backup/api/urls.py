@@ -5,5 +5,5 @@ app_name = 'blog'
 
 urlpatterns = [
     path('trigger/<int:pk>/', views.TriggerDetail.as_view()),
-    path('trigger/', views.TriggerList.as_view()),
+    path('backup/', views.PointerList.as_view()),
 ]
