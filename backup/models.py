@@ -21,8 +21,10 @@ class Marker(models.Model):
         verbose_name_plural     = 'Markers'
 
 class Action(models.Model):
-    Action_Name = models.TextField(primary_key=True)
+    Action_Name = models.TextField()
     icon = models.TextField()
+    action_position = models.IntegerField()
+    action_detail = models.TextField()
 
     def __str__(self):
         return self.Action_Name
@@ -45,9 +47,9 @@ class Pointer(models.Model):
     position_y = models.FloatField()
     position_x = models.FloatField()
     _range = models.FloatField()
-    action_position = models.IntegerField()
+
 
     title = models.TextField()
     icon = models.TextField()
     description = models.TextField()
-    action_detail = models.TextField()
+

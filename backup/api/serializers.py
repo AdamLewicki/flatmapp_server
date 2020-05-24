@@ -23,14 +23,16 @@ class TriggerSerializer(WritableNestedModelSerializer):
 
     class Meta:
         model = Trigger
-        fields = "__all__"
+        # fields = "__all__"
         depth = 2
+        exclude = ("id",)
 
 class PointerSerializer(WritableNestedModelSerializer):
     User_Name = AccountSerializaer(required=False, write_only=True)
-    Action_Name = ActionSerializer(many=True, read_only=True)
+    Action_Name = ActionSerializer(many=True)
 
     class Meta:
         model = Pointer
-        fields = "__all__"
-        depth = 2
+        # fields = "__all__"
+        depth = 1
+        exclude = ("id",)

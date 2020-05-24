@@ -73,33 +73,50 @@ class PointerList(APIView):
     # method that saves multiple Pointers
     def post(self, request, format=None):
 
+        # to_save = list()
+        # # splits pointers data
+        # for obj in request.data:
+        #     actions = obj.pop("Action_Name")
+        #     actions = set(actions)
+        #     pointer = Pointer(User_Name=request.user)
+        #     serializer = PointerSerializer(pointer, data=obj)
+        #     # check if Action exists in database, if not, stops saving
+        #     for ack in actions:
+        #         if not Action.objects.filter(Action_Name = ack):
+        #             data = {"Action_Name": [f"Action {ack} is not in the database"], "Status": ["ERROR"]}
+        #             return Response(data, status=status.HTTP_400_BAD_REQUEST)
+        #     # checks if all serializers are valid, if not, stops saving
+        #     if serializer.is_valid():
+        #         tmp = (serializer, pointer, actions)
+        #         to_save.append(tmp)
+        #     else:
+        #         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        #     # we checked if serializers are valid and if actions exits in db, now we can save all pointers
+        #     # also, to add Action_Name, a pointer must have pk, so we can add it only after saving    
+        # for tmp in to_save:
+        #     tmp[0].save()
+        #     tmp[1].Action_Name.set(tmp[2])
+
+        #     data = {"Status" : ["OK"]}
+        #     return Response(data, status=status.HTTP_201_CREATED)
+
         to_save = list()
-        # splits pointers data
         for obj in request.data:
-            actions = obj.pop("Action_Name")
-            actions = set(actions)
             pointer = Pointer(User_Name=request.user)
             serializer = PointerSerializer(pointer, data=obj)
-            # check if Action exists in database, if not, stops saving
-            for ack in actions:
-                if not Action.objects.filter(Action_Name = ack):
-                    data = {"Action_Name": [f"Action {ack} is not in the database"], "Status": ["ERROR"]}
-                    return Response(data, status=status.HTTP_400_BAD_REQUEST)
-            # checks if all serializers are valid, if not, stops saving
             if serializer.is_valid():
-                tmp = (serializer, pointer, actions)
+                tmp = (serializer, pointer)
                 to_save.append(tmp)
             else:
                 return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-            # we checked if serializers are valid and if actions exits in db, now we can save all pointers
-            # also, to add Action_Name, a pointer must have pk, so we can add it only after saving    
+        
         for tmp in to_save:
             tmp[0].save()
-            tmp[1].Action_Name.set(tmp[2])
 
-            data = {"Status" : ["OK"]}
-            return Response(data, status=status.HTTP_201_CREATED)
-    
+        data = {"Status" : ["OK"]}
+        return Response(data, status=status.HTTP_201_CREATED)
+
+        
     def delete(self, request):
         pointer = Pointer.objects.filter(User_Name=request.user)
         pointer.delete()
