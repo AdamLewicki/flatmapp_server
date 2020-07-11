@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
-
+from rest_framework.settings import api_settings
 
 from rest_framework import mixins
 from rest_framework import generics
@@ -16,7 +16,7 @@ from backup.models import Action
 
 class PointerList(APIView):
     permission_classes = [IsAuthenticated]
-
+    pagination_class = api_settings.DEFAULT_PAGINATION_CLASS
     def get(self, request):
         user = request.user
         
@@ -27,7 +27,6 @@ class PointerList(APIView):
     # method that saves multiple Pointers
     def post(self, request, format=None):
 
-        print(str(request))
         to_save = list()
         for obj in request.data:
             pointer = Pointer(User_Name=request.user)

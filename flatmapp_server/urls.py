@@ -41,6 +41,7 @@ urlpatterns = [
     # REST FRAMEWORK URLS
     path('api/backup/', include('backup.api.urls', 'backup_api')),
     path('api/account/', include('account.api.urls', 'account_api')),
+    path('api/category/', include('category.api.urls', 'category_api')),
 
     # SWAGGER
     url(r'^swagger(?P<format>\.json|\.yaml)$', schema_view.without_ui(cache_timeout=0), name='schema-json'),
