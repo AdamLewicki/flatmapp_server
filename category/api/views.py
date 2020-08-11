@@ -1,4 +1,5 @@
 import googlemaps
+import sys
 
 from rest_framework import status
 from rest_framework.response import Response
@@ -16,13 +17,15 @@ class Category(APIView):
 
         data = request.data
 
-
         gmaps = googlemaps.Client(key="")
 
         try:
-            places = gmaps.places(query=data.get("category"), 
-                    location=(data.get("position_x"), data.get("position_y")), 
-                    radius=data.get("range"), language="pl")
+            if data.get('approximate') == True:
+                places = gmaps.places(query=data.get("category"), 
+                        location=(data.get("position_x"), data.get("position_y")), 
+                        radius=data.get("range"), language="pl")
+            else:
+                places = gmaps.places_nearby(radius=data.get("range"), location=f"{data.get('position_x')}, {data.get('position_y')}", language="en", name=data.get("category"))
         except googlemaps.exceptions.ApiError:
             return Response({ data: "Category, range or position_x/position_y is missing"}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -32,11 +35,13 @@ class Category(APIView):
         for index, place in enumerate(places):
             geometry = place.get("geometry")
             location = geometry.get("location")
-            radius = 176
             name = place.get("name")
-            addres = place.get("formatted_address")
 
-            tmp = dict(addres=addres, location=location, name=name, radius=radius)
+            address = place.get("formatted_address")
+            if address is None:
+                address = place.get('vicinity')
+
+            tmp = dict(addres=address, location=location, name=name)
             output[str(index)] = tmp
 
 
