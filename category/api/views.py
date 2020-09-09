@@ -11,13 +11,21 @@ from rest_framework.settings import api_settings
 from rest_framework import mixins
 from rest_framework import generics
 
+
+import os
+import json
+# Open settings file
+settings_file = open("settings.json")
+settings_data = json.load(settings_file)
+
+
 class Category(APIView):
 
     def post(self, request):
 
         data = request.data
 
-        gmaps = googlemaps.Client(key="")
+        gmaps = googlemaps.Client(key=settings_data.get("google_api_key"))
 
         try:
             if data.get('approximate') == True:
