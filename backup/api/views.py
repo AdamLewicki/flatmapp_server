@@ -16,7 +16,7 @@ from backup.models import Action
 
 class PointerList(APIView):
     permission_classes = [IsAuthenticated]
-    pagination_class = api_settings.DEFAULT_PAGINATION_CLASS
+
     def get(self, request):
         user = request.user
         
@@ -45,11 +45,9 @@ class PointerList(APIView):
         data = {"Status" : ["OK"]}
         return Response(data, status=status.HTTP_201_CREATED)
 
-        
     def delete(self, request):
         pointer = Pointer.objects.filter(User_Name=request.user)
         pointer.delete()
         
         data = {"Status" : ["OK"]}
         return Response(data, status=status.HTTP_204_NO_CONTENT)
-        
