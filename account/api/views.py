@@ -4,6 +4,9 @@ from rest_framework.decorators import api_view
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated, AllowAny
 
+from rest_framework.authtoken.serializers import AuthTokenSerializer
+from rest_framework.authtoken.models import Token
+
 from account.models import Account
 from account.api.serializers import AccountSerializaer, ChangePasswordSerializer
 
@@ -48,6 +51,7 @@ class UpdatePassword(APIView):
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
 class DeleteAccount(APIView):
     permission_classes = [IsAuthenticated]
 
@@ -58,4 +62,17 @@ class DeleteAccount(APIView):
         user = self.get_object()
         user.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
-        
+
+
+class LoginAccount(APIView):
+    serializer_class = AuthTokenSerializer
+    permission_classes = [AllowAny]
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.serializer_class(data=request.data,
+                                           context={'request': request})
+        serializer.is_valid(raise_exception=True)
+        user = serializer.validated_data['user']
+        user.auth_token.delete()
+        token, created = Token.objects.get_or_create(user=user)
+        return Response({'token': token.key})
