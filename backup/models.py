@@ -21,6 +21,7 @@ class Pointer(models.Model):
     User_Name = models.ForeignKey(Account, on_delete=models.CASCADE)
     Action_Name = models.ManyToManyField(Action)
 
+    queue = models.IntegerField()
     position_y = models.FloatField()
     position_x = models.FloatField()
     _range = models.FloatField()

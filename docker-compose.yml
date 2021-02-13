@@ -1,14 +1,6 @@
 version: '3.7'
 
 services:
-  db:
-    image: mysql:5.7
-    ports:
-      - '3306:3306'
-    environment:
-       MYSQL_DATABASE: 'flatt-app-db'
-       MYSQL_PASSWORD: 'Jednabazabyrzadzicproejktem'
-       MYSQL_ROOT_PASSWORD: 'Jednabazabyrzadzicproejktem'
   web:
     build: .
     command: >
@@ -19,5 +11,3 @@ services:
              gunicorn -b 0.0.0.0:8000 -w 4 flatmapp_server.wsgi"
     ports:
       - 8000:8000
-    depends_on:
-      - db
