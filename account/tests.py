@@ -14,7 +14,6 @@ class RegistrationTestCase(APITestCase):
 
     def test_registration(self):
         data = {
-            "email": "tester@tester.test",
             "username": "test",
             "password": "Testowehaslo1!",
             "password2": "Testowehaslo1!"
@@ -24,7 +23,6 @@ class RegistrationTestCase(APITestCase):
     
     def test_registration_but_user_exists(self):
         data = {
-            "email": "tester@tester.test",
             "username": "test",
             "password": "Testowehaslo1!",
             "password2": "Testowehaslo1!"
@@ -43,7 +41,7 @@ class ChangePasswordTestCase(APITestCase):
 
     def setUp(self):
         self.user = Account.objects.create_user(username="pass_chng_tester",
-        password="VeryStrongPassword10/10", email="zmyslony@email.de")
+        password="VeryStrongPassword10/10")
 
         self.token = Token.objects.get(user=self.user)
         self.api_authentication()
@@ -115,7 +113,7 @@ class ChangePasswordTestCase(APITestCase):
 class DeleteAccountTestCase(APITestCase):
     def setUp(self):
         self.user = Account.objects.create_user(username="pass_chng_tester",
-        password="VeryStrongPassword10/10", email="zmyslony@email.de")
+        password="VeryStrongPassword10/10")
 
         self.token = Token.objects.get(user=self.user)
         self.api_authentication()

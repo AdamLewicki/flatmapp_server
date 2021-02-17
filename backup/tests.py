@@ -11,11 +11,12 @@ from account.models import Account
 from backup.api.serializers import ActionSerializer, PointerSerializer
 from backup.models import Action, Pointer
 
+
 class PointerListTestCase(APITestCase):
 
     def setUp(self):
         self.user = Account.objects.create_user(username="pass_chng_tester",
-        password="VeryStrongPassword10/10", email="zmyslony@email.de")
+        password="VeryStrongPassword10/10")
 
         self.token = Token.objects.get(user=self.user)
         self.api_authentication()
@@ -50,10 +51,11 @@ class PointerListTestCase(APITestCase):
                         "_range": 3.0,
                         "title": "EEEEEEEEE",
                         "icon": "C",
-                        "description": "C"
+                        "description": "C",
+                        "queue": 1
                     }]
                 
-        response = self.client.post("/api/backup/", data)
+        response = self.client.post("/api/backup/", json.dumps(data), content_type="application/json")
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
     def test_get_pointer_list(self):
