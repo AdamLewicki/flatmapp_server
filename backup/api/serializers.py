@@ -16,6 +16,5 @@ class PointerSerializer(WritableNestedModelSerializer):
 
     class Meta:
         model = Pointer
-        # fields = "__all__"
         depth = 1
         exclude = ("id",)

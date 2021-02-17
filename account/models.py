@@ -7,14 +7,11 @@ from django.dispatch import receiver
 from rest_framework.authtoken.models import Token
 
 class MyAccountManager(BaseUserManager):
-	def create_user(self, email, username, password=None):
-		if not email:
-			raise ValueError('Users must have an email address')
+	def create_user(self, username, password=None):
 		if not username:
 			raise ValueError('Users must have a username')
 
 		user = self.model(
-			email=self.normalize_email(email),
 			username=username,
 		)
 
@@ -22,9 +19,8 @@ class MyAccountManager(BaseUserManager):
 		user.save(using=self._db)
 		return user
 
-	def create_superuser(self, email, username, password):
+	def create_superuser(self, username, password):
 		user = self.create_user(
-			email=self.normalize_email(email),
 			password=password,
 			username=username,
 		)
@@ -51,7 +47,7 @@ class Account(AbstractBaseUser):
 	objects = MyAccountManager()
 
 	def __str__(self):
-		return self.email
+		return self.username
 
 	# For checking permissions. to keep it simple all admin have ALL permissons
 	def has_perm(self, perm, obj=None):

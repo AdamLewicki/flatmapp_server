@@ -19,3 +19,6 @@ db.sqlite3
 *.pyc
 *.pyc
 *.yml
+.idea/encodings.xml
+.idea/workspace.xml
+**/migrations
