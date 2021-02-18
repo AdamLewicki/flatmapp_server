@@ -32,6 +32,8 @@ class Pointer(models.Model):
     icon = models.TextField()
     description = models.TextField()
 
+    groupID = models.TextField()
+
 
 class Group(models.Model):
     User_Name = models.ForeignKey(Account, on_delete=models.CASCADE)
