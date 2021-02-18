@@ -30,9 +30,9 @@ class Pointer(models.Model):
 
     title = models.TextField()
     icon = models.TextField()
-    description = models.TextField()
+    description = models.TextField(blank=True)
 
-    groupID = models.TextField()
+    groupID = models.TextField(blank=True)
 
 
 class Group(models.Model):
