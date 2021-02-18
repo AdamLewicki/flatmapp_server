@@ -3,6 +3,7 @@ from account.models import Account
 
 # Create your models here.
 
+
 class Action(models.Model):
     Action_Name = models.TextField()
     icon = models.TextField()
@@ -17,6 +18,7 @@ class Action(models.Model):
         verbose_name            = 'Action'
         verbose_name_plural     = 'Actions'
 
+
 class Pointer(models.Model):
     User_Name = models.ForeignKey(Account, on_delete=models.CASCADE)
     Action_Name = models.ManyToManyField(Action)
@@ -26,8 +28,15 @@ class Pointer(models.Model):
     position_x = models.FloatField()
     _range = models.FloatField()
 
-
     title = models.TextField()
     icon = models.TextField()
     description = models.TextField()
 
+
+class Group(models.Model):
+    User_Name = models.ForeignKey(Account, on_delete=models.CASCADE)
+
+    groupID = models.TextField()
+    _range = models.FloatField()
+    name = models.TextField()
+    Action_Name = models.ManyToManyField(Action)
