@@ -37,8 +37,9 @@ class Pointer(models.Model):
 
 class Group(models.Model):
     User_Name = models.ForeignKey(Account, on_delete=models.CASCADE)
+    Action_Name = models.ManyToManyField(Action)
 
     groupID = models.TextField()
     _range = models.FloatField()
     name = models.TextField()
-    Action_Name = models.ManyToManyField(Action)
+    icon = models.TextField()
