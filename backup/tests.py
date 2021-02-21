@@ -52,12 +52,63 @@ class PointerListTestCase(APITestCase):
                         "title": "EEEEEEEEE",
                         "icon": "C",
                         "description": "C",
-                        "queue": 1
+                        "queue": 1,
+                        "groupID": "GROUPID"
                     }]
                 
-        response = self.client.post("/api/backup/", json.dumps(data), content_type="application/json")
+        response = self.client.post("/api/backup/pointer/", json.dumps(data), content_type="application/json")
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
     def test_get_pointer_list(self):
-        response = self.client.get("/api/backup/")
+        response = self.client.get("/api/backup/pointer/")
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+
+class GroupListTestCase(APITestCase):
+
+    def setUp(self):
+        self.user = Account.objects.create_user(username="pass_chng_tester",
+        password="VeryStrongPassword10/10")
+
+        self.token = Token.objects.get(user=self.user)
+        self.api_authentication()
+
+    def api_authentication(self):
+        self.client.credentials(HTTP_AUTHORIZATION=f"Token {self.token}")
+
+    def test_post_group_list(self):
+        data = [
+                {
+                    "Action_Name": [
+                        {
+                            "Action_Name": "ACTION NAME I",
+                            "icon": "A",
+                            "action_position": 1,
+                            "action_detail": "ACTION DETAIL"
+                        },
+                        {
+                            "Action_Name": "ACTION NAME II",
+                            "icon": "B",
+                            "action_position": 1,
+                            "action_detail": "ACTION DETAIL"
+                        },
+                        {
+                            "Action_Name": "ACTION NAME III",
+                            "icon": "C",
+                            "action_position": 1,
+                            "action_detail": "ACTION DETAIL"
+                        }
+                    ],
+                    "groupID": "groupID",
+                    "_range": 1.0,
+                    "name": "Group Name",
+                    "icon": "ICON"
+                }
+            ]
+
+        response = self.client.post("/api/backup/group/", json.dumps(data), content_type="application/json")
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+    def test_get_group_list(self):
+        response = self.client.get("/api/backup/group/")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
