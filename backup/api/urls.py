@@ -4,5 +4,6 @@ from backup.api import views
 app_name = 'backup'
 
 urlpatterns = [
-    path('', views.PointerList.as_view()),
+    path('pointer/', views.PointerList.as_view()),
+    path('group/', views.GroupList.as_view()),
 ]

@@ -11,14 +11,10 @@ post_get_test/__pycache__/urls.cpython-38.pyc
 post_get_test/__pycache__/__init__.cpython-38.pyc
 post_get_test/__init__.py
 db.sqlite3
-.idea/flatmapp_server.iml
-.idea/inspectionProfiles/profiles_settings.xml
-.idea/misc.xml
-.idea/modules.xml
-.idea/vcs.xml
 *.pyc
 *.pyc
 *.yml
 .idea/encodings.xml
 .idea/workspace.xml
 **/migrations
+**/.idea
